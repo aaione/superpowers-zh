@@ -1,11 +1,11 @@
-# Installing Superpowers for OpenCode
+# 为 OpenCode 安装 Superpowers
 
-## Prerequisites
+## 先决条件 (Prerequisites)
 
-- [OpenCode.ai](https://opencode.ai) installed
-- Git installed
+- 已安装 [OpenCode.ai](https://opencode.ai)
+- 已安装 Git
 
-## Installation Steps
+## 安装步骤 (Installation Steps)
 
 ### 1. Clone Superpowers
 
@@ -13,9 +13,9 @@
 git clone https://github.com/obra/superpowers.git ~/.config/opencode/superpowers
 ```
 
-### 2. Register the Plugin
+### 2. 注册 Plugin
 
-Create a symlink so OpenCode discovers the plugin:
+创建一个 symlink 以便 OpenCode 发现 plugin:
 
 ```bash
 mkdir -p ~/.config/opencode/plugins
@@ -25,7 +25,7 @@ ln -s ~/.config/opencode/superpowers/.opencode/plugins/superpowers.js ~/.config/
 
 ### 3. Symlink Skills
 
-Create a symlink so OpenCode's native skill tool discovers superpowers skills:
+创建一个 symlink 以便 OpenCode 的原生 skill 工具发现 superpowers skills:
 
 ```bash
 mkdir -p ~/.config/opencode/skills
@@ -33,39 +33,39 @@ rm -rf ~/.config/opencode/skills/superpowers
 ln -s ~/.config/opencode/superpowers/skills ~/.config/opencode/skills/superpowers
 ```
 
-### 4. Restart OpenCode
+### 4. 重启 OpenCode
 
-Restart OpenCode. The plugin will automatically inject superpowers context.
+重启 OpenCode。Plugin 将自动注入 superpowers 上下文。
 
-Verify by asking: "do you have superpowers?"
+通过询问验证: "do you have superpowers?"
 
-## Usage
+## 用法 (Usage)
 
-### Finding Skills
+### 查找 Skills
 
-Use OpenCode's native `skill` tool to list available skills:
+使用 OpenCode 的原生 `skill` 工具列出可用的 skills:
 
 ```
 use skill tool to list skills
 ```
 
-### Loading a Skill
+### 加载 Skill
 
-Use OpenCode's native `skill` tool to load a specific skill:
+使用 OpenCode 的原生 `skill` 工具加载特定的 skill:
 
 ```
 use skill tool to load superpowers/brainstorming
 ```
 
-### Personal Skills
+### 个人 Skills (Personal Skills)
 
-Create your own skills in `~/.config/opencode/skills/`:
+在 `~/.config/opencode/skills/` 中创建你自己的 skills:
 
 ```bash
 mkdir -p ~/.config/opencode/skills/my-skill
 ```
 
-Create `~/.config/opencode/skills/my-skill/SKILL.md`:
+创建 `~/.config/opencode/skills/my-skill/SKILL.md`:
 
 ```markdown
 ---
@@ -78,42 +78,42 @@ description: Use when [condition] - [what it does]
 [Your skill content here]
 ```
 
-### Project Skills
+### 项目 Skills (Project Skills)
 
-Create project-specific skills in `.opencode/skills/` within your project.
+在你项目内的 `.opencode/skills/` 中创建项目特定的 skills。
 
-**Skill Priority:** Project skills > Personal skills > Superpowers skills
+**Skill 优先级:** Project skills > Personal skills > Superpowers skills
 
-## Updating
+## 更新 (Updating)
 
 ```bash
 cd ~/.config/opencode/superpowers
 git pull
 ```
 
-## Troubleshooting
+## 故障排除 (Troubleshooting)
 
-### Plugin not loading
+### Plugin 未加载
 
-1. Check plugin symlink: `ls -l ~/.config/opencode/plugins/superpowers.js`
-2. Check source exists: `ls ~/.config/opencode/superpowers/.opencode/plugins/superpowers.js`
-3. Check OpenCode logs for errors
+1. 检查 plugin symlink: `ls -l ~/.config/opencode/plugins/superpowers.js`
+2. 检查源是否存在: `ls ~/.config/opencode/superpowers/.opencode/plugins/superpowers.js`
+3. 检查 OpenCode 日志以查找错误
 
-### Skills not found
+### Skills 未找到
 
-1. Check skills symlink: `ls -l ~/.config/opencode/skills/superpowers`
-2. Verify it points to: `~/.config/opencode/superpowers/skills`
-3. Use `skill` tool to list what's discovered
+1. 检查 skills symlink: `ls -l ~/.config/opencode/skills/superpowers`
+2. 验证它指向: `~/.config/opencode/superpowers/skills`
+3. 使用 `skill` 工具列出已发现的内容
 
-### Tool mapping
+### 工具映射 (Tool mapping)
 
-When skills reference Claude Code tools:
+当 skills 引用 Claude Code 工具时:
 - `TodoWrite` → `update_plan`
 - `Task` with subagents → `@mention` syntax
 - `Skill` tool → OpenCode's native `skill` tool
 - File operations → your native tools
 
-## Getting Help
+## 获取帮助 (Getting Help)
 
-- Report issues: https://github.com/obra/superpowers/issues
-- Full documentation: https://github.com/obra/superpowers/blob/main/docs/README.opencode.md
+- 报告问题: https://github.com/obra/superpowers/issues
+- 完整文档: https://github.com/obra/superpowers/blob/main/docs/README.opencode.md

@@ -1,54 +1,54 @@
 ---
 name: brainstorming
-description: "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation."
+description: "在进行任何创造性工作之前，你必须使用此功能——创造特性、构建组件、添加功能或修改行为。在实施之前探索用户意图、需求和设计。"
 ---
 
 # Brainstorming Ideas Into Designs
 
-## Overview
+## 概述 (Overview)
 
-Help turn ideas into fully formed designs and specs through natural collaborative dialogue.
+通过自然的协作对话，帮助将想法转化为完全成型的 designs（设计）和 specs（规范）。
 
-Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design in small sections (200-300 words), checking after each section whether it looks right so far.
+首先了解当前的项目背景，然后一次问一个问题来完善想法。一旦你理解了你要构建什么，就以小节（200-300 字）的形式展示 design，并在每一节之后确认它目前看起来是否正确。
 
-## The Process
+## 流程 (The Process)
 
-**Understanding the idea:**
-- Check out the current project state first (files, docs, recent commits)
-- Ask questions one at a time to refine the idea
-- Prefer multiple choice questions when possible, but open-ended is fine too
-- Only one question per message - if a topic needs more exploration, break it into multiple questions
-- Focus on understanding: purpose, constraints, success criteria
+**理解想法:**
+- 首先检查当前的项目状态（文件、文档、最近的 commits）
+- 一次问一个问题来完善想法
+- 尽可能优先选择多项选择题，但开放式问题也可以
+- 每条消息只有一个问题——如果一个话题需要更多探索，将其分解为多个问题
+- 专注于理解：目的、约束、成功标准
 
-**Exploring approaches:**
-- Propose 2-3 different approaches with trade-offs
-- Present options conversationally with your recommendation and reasoning
-- Lead with your recommended option and explain why
+**探索方法:**
+- 提出 2-3 种具有权衡的不同方法
+- 以对话方式展示选项，并附上你的推荐和理由
+- 把你推荐的选项放在最前面，并解释原因
 
-**Presenting the design:**
-- Once you believe you understand what you're building, present the design
-- Break it into sections of 200-300 words
-- Ask after each section whether it looks right so far
-- Cover: architecture, components, data flow, error handling, testing
-- Be ready to go back and clarify if something doesn't make sense
+**展示 Design:**
+- 一旦你认为你理解了你要构建什么，就展示 design
+- 将其分解为 200-300 字的章节
+- 在每一节之后询问目前看起来是否正确
+- 涵盖：架构、组件、数据流、错误处理、测试
+- 如果有些地方说不通，准备好回头澄清
 
-## After the Design
+## Design 之后
 
-**Documentation:**
-- Write the validated design to `docs/plans/YYYY-MM-DD-<topic>-design.md`
-- Use elements-of-style:writing-clearly-and-concisely skill if available
-- Commit the design document to git
+**文档:**
+- 将经过验证的 design 写入 `docs/plans/YYYY-MM-DD-<topic>-design.md`
+- 如果可用，使用 elements-of-style:writing-clearly-and-concisely skill
+- 将 design 文档 commit 到 git
 
-**Implementation (if continuing):**
-- Ask: "Ready to set up for implementation?"
-- Use superpowers:using-git-worktrees to create isolated workspace
-- Use superpowers:writing-plans to create detailed implementation plan
+**实施 (如果继续):**
+- 询问：“准备好进行实施设置了吗？”
+- 使用 superpowers:using-git-worktrees 创建隔离的工作区 (workspace)
+- 使用 superpowers:writing-plans 创建详细的实施 plan
 
-## Key Principles
+## 关键原则 (Key Principles)
 
-- **One question at a time** - Don't overwhelm with multiple questions
-- **Multiple choice preferred** - Easier to answer than open-ended when possible
-- **YAGNI ruthlessly** - Remove unnecessary features from all designs
-- **Explore alternatives** - Always propose 2-3 approaches before settling
-- **Incremental validation** - Present design in sections, validate each
-- **Be flexible** - Go back and clarify when something doesn't make sense
+- **一次一个问题** - 不要用多个问题压倒对方
+- **优先选择多项选择** - 在可能的情况下，比开放式问题更容易回答
+- **无情地 YAGNI** - 从所有 designs 中删除不必要的功能
+- **探索替代方案** - 在定案之前总是提出 2-3 种方法
+- **增量验证** - 分节展示 design，验证每一节
+- **保持灵活** - 当有些地方说不通时，回头澄清

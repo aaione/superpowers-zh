@@ -1,23 +1,23 @@
 # Superpowers for Codex
 
-Complete guide for using Superpowers with OpenAI Codex.
+使用 OpenAI Codex 的 Superpowers 完整指南。
 
-## Quick Install
+## 快速安装 (Quick Install)
 
-Tell Codex:
+告诉 Codex:
 
 ```
 Fetch and follow instructions from https://raw.githubusercontent.com/obra/superpowers/refs/heads/main/.codex/INSTALL.md
 ```
 
-## Manual Installation
+## 手动安装 (Manual Installation)
 
-### Prerequisites
+### 先决条件 (Prerequisites)
 
-- OpenAI Codex access
-- Shell access to install files
+- OpenAI Codex 访问权限
+- 安装文件的 Shell 访问权限
 
-### Installation Steps
+### 安装步骤 (Installation Steps)
 
 #### 1. Clone Superpowers
 
@@ -26,51 +26,51 @@ mkdir -p ~/.codex/superpowers
 git clone https://github.com/obra/superpowers.git ~/.codex/superpowers
 ```
 
-#### 2. Install Bootstrap
+#### 2. 安装 Bootstrap
 
-The bootstrap file is included in the repository at `.codex/superpowers-bootstrap.md`. Codex will automatically use it from the cloned location.
+Bootstrap 文件包含在仓库中的 `.codex/superpowers-bootstrap.md`。Codex 将自动从克隆的位置使用它。
 
-#### 3. Verify Installation
+#### 3. 验证安装 (Verify Installation)
 
-Tell Codex:
+告诉 Codex:
 
 ```
 Run ~/.codex/superpowers/.codex/superpowers-codex find-skills to show available skills
 ```
 
-You should see a list of available skills with descriptions.
+你应该看到带有描述的可用 skills 列表。
 
-## Usage
+## 用法 (Usage)
 
-### Finding Skills
+### 查找 Skills (Finding Skills)
 
 ```
 Run ~/.codex/superpowers/.codex/superpowers-codex find-skills
 ```
 
-### Loading a Skill
+### 加载 Skill (Loading a Skill)
 
 ```
 Run ~/.codex/superpowers/.codex/superpowers-codex use-skill superpowers:brainstorming
 ```
 
-### Bootstrap All Skills
+### Bootstrap 所有 Skills
 
 ```
 Run ~/.codex/superpowers/.codex/superpowers-codex bootstrap
 ```
 
-This loads the complete bootstrap with all skill information.
+这将加载包含所有 skill 信息的完整 bootstrap。
 
-### Personal Skills
+### 个人 Skills (Personal Skills)
 
-Create your own skills in `~/.codex/skills/`:
+在 `~/.codex/skills/` 中创建你自己的 skills:
 
 ```bash
 mkdir -p ~/.codex/skills/my-skill
 ```
 
-Create `~/.codex/skills/my-skill/SKILL.md`:
+创建 `~/.codex/skills/my-skill/SKILL.md`:
 
 ```markdown
 ---
@@ -83,71 +83,71 @@ description: Use when [condition] - [what it does]
 [Your skill content here]
 ```
 
-Personal skills override superpowers skills with the same name.
+Personal skills 会覆盖同名的 superpowers skills。
 
-## Architecture
+## 架构 (Architecture)
 
 ### Codex CLI Tool
 
-**Location:** `~/.codex/superpowers/.codex/superpowers-codex`
+**位置:** `~/.codex/superpowers/.codex/superpowers-codex`
 
-A Node.js CLI script that provides three commands:
-- `bootstrap` - Load complete bootstrap with all skills
-- `use-skill <name>` - Load a specific skill
-- `find-skills` - List all available skills
+一个提供三个命令的 Node.js CLI 脚本:
+- `bootstrap` - 加载包含所有 skills 的完整 bootstrap
+- `use-skill <name>` - 加载特定的 skill
+- `find-skills` - 列出所有可用的 skills
 
-### Shared Core Module
+### 共享核心模块 (Shared Core Module)
 
-**Location:** `~/.codex/superpowers/lib/skills-core.js`
+**位置:** `~/.codex/superpowers/lib/skills-core.js`
 
-The Codex implementation uses the shared `skills-core` module (ES module format) for skill discovery and parsing. This is the same module used by the OpenCode plugin, ensuring consistent behavior across platforms.
+Codex 实现使用共享的 `skills-core` 模块 (ES module 格式) 进行 skill 发现和解析。这与 OpenCode 插件使用的模块相同，确保存跨平台的一致行为。
 
-### Tool Mapping
+### 工具映射 (Tool Mapping)
 
-Skills written for Claude Code are adapted for Codex with these mappings:
+为 Claude Code 编写的 Skills 针对 Codex 进行了以下映射适配:
 
 - `TodoWrite` → `update_plan`
-- `Task` with subagents → Tell user subagents aren't available, do work directly
+- `Task` with subagents → 告诉用户 subagents 不可用，直接做工作
 - `Skill` tool → `~/.codex/superpowers/.codex/superpowers-codex use-skill`
 - File operations → Native Codex tools
 
-## Updating
+## 更新 (Updating)
 
 ```bash
 cd ~/.codex/superpowers
 git pull
 ```
 
-## Troubleshooting
+## 故障排除 (Troubleshooting)
 
-### Skills not found
+### Skills 未找到
 
-1. Verify installation: `ls ~/.codex/superpowers/skills`
-2. Check CLI works: `~/.codex/superpowers/.codex/superpowers-codex find-skills`
-3. Verify skills have SKILL.md files
+1. 验证安装: `ls ~/.codex/superpowers/skills`
+2. 检查 CLI 是否工作: `~/.codex/superpowers/.codex/superpowers-codex find-skills`
+3. 验证 skills 是否有 SKILL.md 文件
 
-### CLI script not executable
+### CLI 脚本不可执行
 
 ```bash
 chmod +x ~/.codex/superpowers/.codex/superpowers-codex
 ```
 
-### Node.js errors
+### Node.js 错误
 
-The CLI script requires Node.js. Verify:
+CLI 脚本需要 Node.js。验证:
 
 ```bash
 node --version
 ```
 
-Should show v14 or higher (v18+ recommended for ES module support).
+应显示 v14 或更高版本 (推荐 v18+ 以支持 ES module)。
 
-## Getting Help
+## 获取帮助 (Getting Help)
 
-- Report issues: https://github.com/obra/superpowers/issues
-- Main documentation: https://github.com/obra/superpowers
-- Blog post: https://blog.fsck.com/2025/10/27/skills-for-openai-codex/
+- 报告问题: https://github.com/obra/superpowers/issues
+- 主要文档: https://github.com/obra/superpowers
+- 博客文章: https://blog.fsck.com/2025/10/27/skills-for-openai-codex/
 
-## Note
+## 注意 (Note)
 
-Codex support is experimental and may require refinement based on user feedback. If you encounter issues, please report them on GitHub.
+Codex 支持是实验性的，可能需要根据用户反馈进行改进。如果你遇到问题，请在 GitHub 上报告。

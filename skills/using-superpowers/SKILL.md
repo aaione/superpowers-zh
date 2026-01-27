@@ -1,27 +1,27 @@
 ---
 name: using-superpowers
-description: Use when starting any conversation - establishes how to find and use skills, requiring Skill tool invocation before ANY response including clarifying questions
+description: 当开始任何对话时使用 - 建立如何查找和使用 skills，需要在任何响应（包括澄清问题）之前调用 Skill 工具
 ---
 
 <EXTREMELY-IMPORTANT>
-If you think there is even a 1% chance a skill might apply to what you are doing, you ABSOLUTELY MUST invoke the skill.
+如果你认为即使只有 1% 的机会某个 skill 可能适用于你正在做的事情，你**绝对必须**调用该 skill。
 
-IF A SKILL APPLIES TO YOUR TASK, YOU DO NOT HAVE A CHOICE. YOU MUST USE IT.
+如果一个 SKILL 适用于你的任务，你没有选择。你必须使用它。
 
-This is not negotiable. This is not optional. You cannot rationalize your way out of this.
+这是不可谈判的。这不是可选的。你不能找借口摆脱它。
 </EXTREMELY-IMPORTANT>
 
-## How to Access Skills
+## 如何访问 Skills
 
-**In Claude Code:** Use the `Skill` tool. When you invoke a skill, its content is loaded and presented to you—follow it directly. Never use the Read tool on skill files.
+**在 Claude Code 中:** 使用 `Skill` 工具。当你调用一个 skill 时，它的内容会被加载并呈现给你——直接遵循它。绝不要对 skill 文件使用 Read 工具。
 
-**In other environments:** Check your platform's documentation for how skills are loaded.
+**在其他环境中:** 检查你平台的文档了解 skills 如何加载。
 
 # Using Skills
 
-## The Rule
+## 规则 (The Rule)
 
-**Invoke relevant or requested skills BEFORE any response or action.** Even a 1% chance a skill might apply means that you should invoke the skill to check. If an invoked skill turns out to be wrong for the situation, you don't need to use it.
+**在任何响应或行动之前调用相关的或请求的 skills。** 即使只有 1% 的机会某个 skill 可能适用，也意味着你应该调用该 skill 来检查。如果调用的 skill 结果证明不适合这种情况，你不需要使用它。
 
 ```dot
 digraph skill_flow {
@@ -45,43 +45,43 @@ digraph skill_flow {
 }
 ```
 
-## Red Flags
+## 危险信号 (Red Flags)
 
-These thoughts mean STOP—you're rationalizing:
+这些想法意味着停止——你在找借口 (rationalizing):
 
-| Thought | Reality |
+| 想法 | 现实 |
 |---------|---------|
-| "This is just a simple question" | Questions are tasks. Check for skills. |
-| "I need more context first" | Skill check comes BEFORE clarifying questions. |
-| "Let me explore the codebase first" | Skills tell you HOW to explore. Check first. |
-| "I can check git/files quickly" | Files lack conversation context. Check for skills. |
-| "Let me gather information first" | Skills tell you HOW to gather information. |
-| "This doesn't need a formal skill" | If a skill exists, use it. |
-| "I remember this skill" | Skills evolve. Read current version. |
-| "This doesn't count as a task" | Action = task. Check for skills. |
-| "The skill is overkill" | Simple things become complex. Use it. |
-| "I'll just do this one thing first" | Check BEFORE doing anything. |
-| "This feels productive" | Undisciplined action wastes time. Skills prevent this. |
-| "I know what that means" | Knowing the concept ≠ using the skill. Invoke it. |
+| "这只是一个简单的问题" | 问题是任务。检查 skills。 |
+| "我先需要更多上下文" | Skill 检查在澄清问题**之前**。 |
+| "让我先探索 codebase" | Skills 告诉你**如何**探索。先检查。 |
+| "我可以快速检查 git/files" | Files 缺乏对话上下文。检查 skills。 |
+| "让我先收集信息" | Skills 告诉你**如何**收集信息。 |
+| "这不需要正式的 skill" | 如果 skill 存在，使用它。 |
+| "我记得这个 skill" | Skills 会进化。阅读当前版本。 |
+| "这不算任务" | 行动 = 任务。检查 skills。 |
+| "Skill有些大材小用" | 简单的事情会变得复杂。使用它。 |
+| "我先做这一件事" | 在做任何事情**之前**检查。 |
+| "这感觉很有成效" | 无纪律的行动浪费时间。Skills 防止这种情况。 |
+| "我知道那是什么意思" | 知道概念 ≠ 使用 skill。调用它。 |
 
-## Skill Priority
+## Skill 优先级
 
-When multiple skills could apply, use this order:
+当多个 skills 可能适用时，使用此顺序:
 
-1. **Process skills first** (brainstorming, debugging) - these determine HOW to approach the task
-2. **Implementation skills second** (frontend-design, mcp-builder) - these guide execution
+1.  **流程 skills 优先** (brainstorming, debugging) - 这些决定**如何**处理任务
+2.  **实施 skills 其次** (frontend-design, mcp-builder) - 这些指导执行
 
-"Let's build X" → brainstorming first, then implementation skills.
-"Fix this bug" → debugging first, then domain-specific skills.
+"Let's build X" → brainstorming 优先，然后是实施 skills。
+"Fix this bug" → debugging 优先，然后是特定领域的 skills。
 
-## Skill Types
+## Skill 类型
 
-**Rigid** (TDD, debugging): Follow exactly. Don't adapt away discipline.
+**刚性 (Rigid)** (TDD, debugging): 严格遵循。不要因适应而放弃纪律。
 
-**Flexible** (patterns): Adapt principles to context.
+**灵活 (Flexible)** (patterns): 使原则适应上下文。
 
-The skill itself tells you which.
+Skill 本身会告诉你属于哪种。
 
-## User Instructions
+## 用户指令
 
-Instructions say WHAT, not HOW. "Add X" or "Fix Y" doesn't mean skip workflows.
+指令说**什么 (WHAT)**，而不是**如何 (HOW)**。"Add X" 或 "Fix Y" 并不意味着跳过工作流。

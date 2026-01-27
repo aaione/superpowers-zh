@@ -61,21 +61,21 @@ export const SuperpowersPlugin = async ({ client, directory }) => {
     const fullContent = fs.readFileSync(skillPath, 'utf8');
     const { content } = extractAndStripFrontmatter(fullContent);
 
-    const toolMapping = `**Tool Mapping for OpenCode:**
-When skills reference tools you don't have, substitute OpenCode equivalents:
+    const toolMapping = `**OpenCode 的工具映射:**
+当 skills 引用你没有的工具时，使用 OpenCode 的等效工具：
 - \`TodoWrite\` → \`update_plan\`
-- \`Task\` tool with subagents → Use OpenCode's subagent system (@mention)
-- \`Skill\` tool → OpenCode's native \`skill\` tool
-- \`Read\`, \`Write\`, \`Edit\`, \`Bash\` → Your native tools
+- \`Task\` tool with subagents → 使用 OpenCode 的 subagent 系统 (@mention)
+- \`Skill\` tool → OpenCode 原生的 \`skill\` 工具
+- \`Read\`, \`Write\`, \`Edit\`, \`Bash\` → 你的原生工具
 
-**Skills location:**
-Superpowers skills are in \`${configDir}/skills/superpowers/\`
-Use OpenCode's native \`skill\` tool to list and load skills.`;
+**Skills 位置:**
+Superpowers skills 位于 \`${configDir}/skills/superpowers/\`
+使用 OpenCode 原生的 \`skill\` 工具来列出和加载 skills。`;
 
     return `<EXTREMELY_IMPORTANT>
-You have superpowers.
+你拥有 superpowers (超能力)。
 
-**IMPORTANT: The using-superpowers skill content is included below. It is ALREADY LOADED - you are currently following it. Do NOT use the skill tool to load "using-superpowers" again - that would be redundant.**
+**重要提示：以下包含了 using-superpowers skill 的内容。它已经加载——你目前正在遵循它。不要再次使用 skill 工具加载 "using-superpowers"——那是多余的。**
 
 ${content}
 

@@ -1,10 +1,10 @@
 # Code Quality Reviewer Prompt Template
 
-Use this template when dispatching a code quality reviewer subagent.
+当 dispatch 一个 code quality reviewer subagent 时使用此模板。
 
-**Purpose:** Verify implementation is well-built (clean, tested, maintainable)
+**目的:** 验证实施是否构建良好（整洁、经过测试、可维护）
 
-**Only dispatch after spec compliance review passes.**
+**仅在 spec compliance review 通过后 dispatch。**
 
 ```
 Task tool (superpowers:code-reviewer):
@@ -17,4 +17,4 @@ Task tool (superpowers:code-reviewer):
   DESCRIPTION: [task summary]
 ```
 
-**Code reviewer returns:** Strengths, Issues (Critical/Important/Minor), Assessment
+**Code reviewer 返回:** Strengths, Issues (Critical/Important/Minor), Assessment

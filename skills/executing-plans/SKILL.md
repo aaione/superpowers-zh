@@ -1,76 +1,77 @@
 ---
 name: executing-plans
-description: Use when you have a written implementation plan to execute in a separate session with review checkpoints
+description: 当你有一份书面的实施 plan 要在单独的会话中执行，并带有审查检查点时使用
 ---
 
 # Executing Plans
 
-## Overview
+## 概述 (Overview)
 
-Load plan, review critically, execute tasks in batches, report for review between batches.
+加载 plan，批判性审查，分批执行任务，在批次之间报告以供审查。
 
-**Core principle:** Batch execution with checkpoints for architect review.
+**核心原则:** 带有架构师审查检查点的批量执行。
 
-**Announce at start:** "I'm using the executing-plans skill to implement this plan."
+**开始时宣布:** "I'm using the executing-plans skill to implement this plan."
 
-## The Process
+## 流程 (The Process)
 
-### Step 1: Load and Review Plan
-1. Read plan file
-2. Review critically - identify any questions or concerns about the plan
-3. If concerns: Raise them with your human partner before starting
-4. If no concerns: Create TodoWrite and proceed
+### 第一步: 加载和审查 Plan
+1.  读取 plan 文件
+2.  批判性审查 - 识别关于 plan 的任何问题或疑虑
+3.  如果有疑虑：在开始之前向你的人类伙伴提出
+4.  如果无疑虑：创建 TodoWrite 并继续
 
-### Step 2: Execute Batch
-**Default: First 3 tasks**
+### 第二步: 执行 Batch (批次)
+**默认: 前 3 个任务**
 
-For each task:
-1. Mark as in_progress
-2. Follow each step exactly (plan has bite-sized steps)
-3. Run verifications as specified
-4. Mark as completed
+对于每个任务：
+1.  标记为 in_progress
+2.  严格遵循每个步骤（plan 有细粒度的步骤）
+3.  按规定运行验证
+4.  标记为 completed
 
-### Step 3: Report
-When batch complete:
-- Show what was implemented
-- Show verification output
-- Say: "Ready for feedback."
+### 第三步: 报告
+当 batch 完成时：
+- 展示已实施的内容
+-展示验证输出
+- 说: "Ready for feedback."
 
-### Step 4: Continue
-Based on feedback:
-- Apply changes if needed
-- Execute next batch
-- Repeat until complete
+### 第四步: 继续
+基于反馈：
+- 如果需要，应用更改
+- 执行下一个 batch
+- 重复直到完成
 
-### Step 5: Complete Development
+### 第五步: 完成开发
 
-After all tasks complete and verified:
-- Announce: "I'm using the finishing-a-development-branch skill to complete this work."
-- **REQUIRED SUB-SKILL:** Use superpowers:finishing-a-development-branch
-- Follow that skill to verify tests, present options, execute choice
+所有任务完成并验证后：
+- 宣布: "I'm using the finishing-a-development-branch skill to complete this work."
+- **必需的 SUB-SKILL:** 使用 superpowers:finishing-a-development-branch
+- 遵循该 skill 来验证测试，展示选项，执行选择
 
-## When to Stop and Ask for Help
+## 何时停止并寻求帮助
 
-**STOP executing immediately when:**
-- Hit a blocker mid-batch (missing dependency, test fails, instruction unclear)
-- Plan has critical gaps preventing starting
-- You don't understand an instruction
-- Verification fails repeatedly
+**当出现以下情况时立即停止执行:**
+- 在 batch 中途遇到 blocker（缺少依赖项，测试失败，指令不清楚）
+- Plan 有导致无法开始的关键缺口
+- 你不理解指令
+- 验证反复失败
 
-**Ask for clarification rather than guessing.**
+**寻求澄清而不是猜测。**
 
-## When to Revisit Earlier Steps
+## 何时重新审视早期步骤
 
-**Return to Review (Step 1) when:**
-- Partner updates the plan based on your feedback
-- Fundamental approach needs rethinking
+**返回审查 (第一步) 当:**
+- 伙伴根据你的反馈更新了 plan
+- 基本方法需要重新思考
 
-**Don't force through blockers** - stop and ask.
+**不要强行通过 blockers** - 停止并询问。
 
-## Remember
-- Review plan critically first
-- Follow plan steps exactly
-- Don't skip verifications
-- Reference skills when plan says to
-- Between batches: just report and wait
-- Stop when blocked, don't guess
+## 记住 (Remember)
+
+- 首先批判性地审查 plan
+- 严格遵循 plan 步骤
+- 不要跳过验证
+- 当 plan 提到时引用 skills
+- 在 batches 之间：只报告并等待
+- 受阻时停止，不要猜测

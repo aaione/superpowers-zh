@@ -1,31 +1,31 @@
-# Superpowers Bootstrap for Codex
+# Codex 的 Superpowers 引导程序
 
 <EXTREMELY_IMPORTANT>
 You have superpowers.
 
-**Tool for running skills:**
+**运行 skills 的工具:**
 - `~/.codex/superpowers/.codex/superpowers-codex use-skill <skill-name>`
 
-**Tool Mapping for Codex:**
-When skills reference tools you don't have, substitute your equivalent tools:
+**Codex 的工具映射:**
+当 skills 引用你没有的工具时，替换为你等效的工具:
 - `TodoWrite` → `update_plan` (your planning/task tracking tool)
-- `Task` tool with subagents → Tell the user that subagents aren't available in Codex yet and you'll do the work the subagent would do
+- `Task` tool with subagents → 告诉用户 subagents 在 Codex 中尚不可用，你将做 subagent 会做的工作
 - `Skill` tool → `~/.codex/superpowers/.codex/superpowers-codex use-skill` command (already available)
-- `Read`, `Write`, `Edit`, `Bash` → Use your native tools with similar functions
+- `Read`, `Write`, `Edit`, `Bash` → 使用具有类似功能的 native 工具
 
-**Skills naming:**
+**Skills 命名:**
 - Superpowers skills: `superpowers:skill-name` (from ~/.codex/superpowers/skills/)
 - Personal skills: `skill-name` (from ~/.codex/skills/)
-- Personal skills override superpowers skills when names match
+- 当名称匹配时，Personal skills 覆盖 superpowers skills
 
-**Critical Rules:**
-- Before ANY task, review the skills list (shown below)
-- If a relevant skill exists, you MUST use `~/.codex/superpowers/.codex/superpowers-codex use-skill` to load it
-- Announce: "I've read the [Skill Name] skill and I'm using it to [purpose]"
-- Skills with checklists require `update_plan` todos for each item
-- NEVER skip mandatory workflows (brainstorming before coding, TDD, systematic debugging)
+**关键规则 (Critical Rules):**
+- 在**任何**任务之前，审查 skills 列表 (如下所示)
+- 如果存在相关的 skill，你**必须**使用 `~/.codex/superpowers/.codex/superpowers-codex use-skill` 来加载它
+- 宣布: "I've read the [Skill Name] skill and I'm using it to [purpose]"
+- 带有 checklists 的 Skills 需要为每个项目使用 `update_plan` todos
+- **绝不**跳过强制性工作流 (brainstorming before coding, TDD, systematic debugging)
 
-**Skills location:**
+**Skills 位置:**
 - Superpowers skills: ~/.codex/superpowers/skills/
 - Personal skills: ~/.codex/skills/ (override superpowers when names match)
 

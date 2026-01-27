@@ -1,30 +1,30 @@
 ---
 name: finishing-a-development-branch
-description: Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by presenting structured options for merge, PR, or cleanup
+description: 当实施完成，所有测试通过，你需要决定如何集成工作时使用 - 通过提供合并、PR 或清理的结构化选项来指导开发工作的完成
 ---
 
 # Finishing a Development Branch
 
-## Overview
+## 概述 (Overview)
 
-Guide completion of development work by presenting clear options and handling chosen workflow.
+通过提供清晰的选项和处理所选的工作流来指导开发工作的完成。
 
-**Core principle:** Verify tests → Present options → Execute choice → Clean up.
+**核心原则:** 验证测试 → 展示选项 → 执行选择 → 清理。
 
-**Announce at start:** "I'm using the finishing-a-development-branch skill to complete this work."
+**开始时宣布:** "I'm using the finishing-a-development-branch skill to complete this work."
 
-## The Process
+## 流程 (The Process)
 
-### Step 1: Verify Tests
+### 第一步: 验证测试
 
-**Before presenting options, verify tests pass:**
+**在展示选项之前，验证测试通过:**
 
 ```bash
 # Run project's test suite
 npm test / cargo test / pytest / go test ./...
 ```
 
-**If tests fail:**
+**如果测试失败:**
 ```
 Tests failing (<N> failures). Must fix before completing:
 
@@ -33,22 +33,22 @@ Tests failing (<N> failures). Must fix before completing:
 Cannot proceed with merge/PR until tests pass.
 ```
 
-Stop. Don't proceed to Step 2.
+停止。不要继续到第二步。
 
-**If tests pass:** Continue to Step 2.
+**如果测试通过:** 继续到第二步。
 
-### Step 2: Determine Base Branch
+### 第二步: 确定 Base Branch (基准分支)
 
 ```bash
 # Try common base branches
 git merge-base HEAD main 2>/dev/null || git merge-base HEAD master 2>/dev/null
 ```
 
-Or ask: "This branch split from main - is that correct?"
+或者询问: "This branch split from main - is that correct?"
 
-### Step 3: Present Options
+### 第三步: 展示选项
 
-Present exactly these 4 options:
+确切地展示这 4 个选项:
 
 ```
 Implementation complete. What would you like to do?
@@ -61,11 +61,11 @@ Implementation complete. What would you like to do?
 Which option?
 ```
 
-**Don't add explanation** - keep options concise.
+**不要添加解释** - 保持选项简洁。
 
-### Step 4: Execute Choice
+### 第四步: 执行选择
 
-#### Option 1: Merge Locally
+#### 选项 1: 本地 Merge
 
 ```bash
 # Switch to base branch
@@ -84,9 +84,9 @@ git merge <feature-branch>
 git branch -d <feature-branch>
 ```
 
-Then: Cleanup worktree (Step 5)
+然后: Cleanup worktree (第五步)
 
-#### Option 2: Push and Create PR
+#### 选项 2: Push 并创建 PR
 
 ```bash
 # Push branch
@@ -103,17 +103,17 @@ EOF
 )"
 ```
 
-Then: Cleanup worktree (Step 5)
+然后: Cleanup worktree (第五步)
 
-#### Option 3: Keep As-Is
+#### 选项 3: 保持原样
 
-Report: "Keeping branch <name>. Worktree preserved at <path>."
+报告: "Keeping branch <name>. Worktree preserved at <path>."
 
-**Don't cleanup worktree.**
+**不要 cleanup worktree。**
 
-#### Option 4: Discard
+#### 选项 4: 丢弃
 
-**Confirm first:**
+**首先确认:**
 ```
 This will permanently delete:
 - Branch <name>
@@ -123,78 +123,78 @@ This will permanently delete:
 Type 'discard' to confirm.
 ```
 
-Wait for exact confirmation.
+等待确切的确认。
 
-If confirmed:
+如果已确认:
 ```bash
 git checkout <base-branch>
 git branch -D <feature-branch>
 ```
 
-Then: Cleanup worktree (Step 5)
+然后: Cleanup worktree (第五步)
 
-### Step 5: Cleanup Worktree
+### 第五步: Cleanup Worktree
 
-**For Options 1, 2, 4:**
+**对于选项 1, 2, 4:**
 
-Check if in worktree:
+检查是否在 worktree 中:
 ```bash
 git worktree list | grep $(git branch --show-current)
 ```
 
-If yes:
+如果是:
 ```bash
 git worktree remove <worktree-path>
 ```
 
-**For Option 3:** Keep worktree.
+**对于选项 3:** 保留 worktree。
 
-## Quick Reference
+## 快速参考 (Quick Reference)
 
-| Option | Merge | Push | Keep Worktree | Cleanup Branch |
+| 选项 | Merge | Push | Keep Worktree | Cleanup Branch |
 |--------|-------|------|---------------|----------------|
 | 1. Merge locally | ✓ | - | - | ✓ |
 | 2. Create PR | - | ✓ | ✓ | - |
 | 3. Keep as-is | - | - | ✓ | - |
 | 4. Discard | - | - | - | ✓ (force) |
 
-## Common Mistakes
+## 常见错误 (Common Mistakes)
 
-**Skipping test verification**
-- **Problem:** Merge broken code, create failing PR
-- **Fix:** Always verify tests before offering options
+**跳过测试验证**
+- **问题:** 合并损坏的代码，创建失败的 PR
+- **修复:** 在提供选项之前始终验证测试
 
-**Open-ended questions**
-- **Problem:** "What should I do next?" → ambiguous
-- **Fix:** Present exactly 4 structured options
+**开放式问题**
+- **问题:** "What should I do next?" → 模棱两可
+- **修复:** 展示确切的 4 个结构化选项
 
-**Automatic worktree cleanup**
-- **Problem:** Remove worktree when might need it (Option 2, 3)
-- **Fix:** Only cleanup for Options 1 and 4
+**自动 worktree清理**
+- **问题:** 在可能需要 worktree 时将其删除 (选项 2, 3)
+- **修复:** 仅针对选项 1 和 4 进行清理
 
-**No confirmation for discard**
-- **Problem:** Accidentally delete work
-- **Fix:** Require typed "discard" confirmation
+**丢弃无确认**
+- **问题:** 意外删除工作
+- **修复:** 需要输入 "discard" 确认
 
-## Red Flags
+## 危险信号 (Red Flags)
 
-**Never:**
-- Proceed with failing tests
-- Merge without verifying tests on result
-- Delete work without confirmation
-- Force-push without explicit request
+**绝不 (Never):**
+- 在测试失败的情况下继续
+- 未在结果上验证测试即合并
+- 未经确认删除工作
+- 未经明确请求强制推送 (Force-push)
 
-**Always:**
-- Verify tests before offering options
-- Present exactly 4 options
-- Get typed confirmation for Option 4
-- Clean up worktree for Options 1 & 4 only
+**总是 (Always):**
+- 在提供选项之前验证测试
+- 展示确切的 4 个选项
+- 获得选项 4 的输入确认
+- 仅为选项 1 和 4 清理 worktree
 
-## Integration
+## 集成 (Integration)
 
-**Called by:**
-- **subagent-driven-development** (Step 7) - After all tasks complete
-- **executing-plans** (Step 5) - After all batches complete
+**被调用方:**
+- **subagent-driven-development** (Step 7) - 所有任务完成后
+- **executing-plans** (Step 5) - 所有 batches 完成后
 
-**Pairs with:**
-- **using-git-worktrees** - Cleans up worktree created by that skill
+**搭配使用:**
+- **using-git-worktrees** - 清理该 skill 创建的 worktree
