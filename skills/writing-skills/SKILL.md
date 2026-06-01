@@ -9,7 +9,7 @@ description: 当创建新 skills、编辑现有 skills 或在部署前验证 ski
 
 **编写 skills 就是应用于流程文档的测试驱动开发 (Test-Driven Development)。**
 
-**个人 skills 存在于特定于 agent 的目录中 (`~/.claude/skills` for Claude Code, `~/.codex/skills` for Codex)**
+**个人 skills 存在于特定于 agent 的目录中 (`~/.claude/skills` for Claude Code, `~/.agents/skills/` for Codex)**
 
 你编写测试用例 (带有 subagents 的压力场景)，看着它们失败 (基线行为)，编写 skill (文档)，看着测试通过 (agents 遵守)，并重构 (堵塞漏洞)。
 
@@ -92,7 +92,7 @@ skills/
 ## SKILL.md 结构
 
 **Frontmatter (YAML):**
-- 仅支持两个字段: `name` 和 `description`
+- 两个必需字段: `name` 和 `description`
 - 总共最多 1024 个字符
 - `name`: 仅使用字母、数字和连字符 (无括号，特殊字符)
 - `description`: 第三人称，仅描述何时使用 (不是它做什么)

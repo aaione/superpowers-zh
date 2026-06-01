@@ -5,9 +5,13 @@ description: 当在当前会话中执行具有独立任务的实施 plans 时使
 
 # Subagent-Driven Development
 
-为每个任务 dispatch (分派) 一个新的 subagent 来执行 plan，并在每个任务后进行两阶段审查：先是 spec (规范) 合规性审查，然后是代码质量审查。
+为每个任务 dispatch 一个新的 subagent 来执行 plan，并在每个任务后进行两阶段审查：先是 spec (规范) 合规性审查，然后是代码质量审查。
+
+**为什么使用 subagents:** 你将任务委托给具有隔离上下文的专门 agents。通过精确地设计他们的指令和上下文，你确保他们保持专注并成功完成任务。他们不应该继承你会话的上下文或历史——你要精确构建他们所需的内容。这也为你自己的上下文保留了空间用于协调工作。
 
 **核心原则:** 每个任务一个新的 subagent + 两阶段审查 (spec 然后 quality) = 高质量，快速迭代
+
+**持续执行:** 不要在任务之间停下来检查你的人类伙伴。执行 plan 中的所有任务而不停止。停止的唯一原因是：你无法解决的 BLOCKED 状态，真正阻碍进展的歧义，或所有任务完成。"我应该继续吗？" 提示和进度总结浪费他们的时间——他们要求你执行 plan，所以执行它。
 
 ## 何时使用 (When to Use)
 
@@ -33,7 +37,7 @@ digraph when_to_use {
 - 同一会话 (无上下文切换)
 - 每个任务一个新的 subagent (无上下文污染)
 - 每个任务后进行两阶段审查：先 spec 合规，再代码质量
-- 更快的迭代 (任务之间无 artificial loop)
+- 更快的迭代 (任务之间无需人工介入)
 
 ## 流程 (The Process)
 
@@ -82,6 +86,39 @@ digraph process {
 }
 ```
 
+## 模型选择 (Model Selection)
+
+使用能处理每个角色的最低功耗模型以节约成本并提高速度。
+
+**机械化实施任务** (隔离的函数，明确的 specs，1-2 个文件)：使用快速、廉价的模型。当 plan 明确时，大多数实施任务是机械化的。
+
+**集成和判断任务** (多文件协调，模式匹配，调试)：使用标准模型。
+
+**架构、设计和审查任务**：使用最强大的可用模型。
+
+**任务复杂度信号:**
+- 涉及 1-2 个文件且有完整 spec → 廉价模型
+- 涉及多个文件且有集成关注 → 标准模型
+- 需要设计判断或广泛的 codebase 理解 → 最强大的模型
+
+## 处理 Implementer 状态 (Handling Implementer Status)
+
+Implementer subagents 报告四种状态之一。适当地处理每种状态：
+
+**DONE:** 继续进行 spec 合规审查。
+
+**DONE_WITH_CONCERNS:** Implementer 完成了工作但标记了疑虑。在继续之前阅读这些疑虑。如果疑虑涉及正确性或范围，在审查前解决它们。如果只是观察（例如，"这个文件变大了"），记录下来并继续审查。
+
+**NEEDS_CONTEXT:** Implementer 需要未提供的信息。提供缺失的上下文并重新 dispatch。
+
+**BLOCKED:** Implementer 无法完成任务。评估阻塞原因：
+1. 如果是上下文问题，提供更多上下文并使用相同模型重新 dispatch
+2. 如果任务需要更多推理能力，使用更强大的模型重新 dispatch
+3. 如果任务太大，将其拆分为更小的部分
+4. 如果 plan 本身有问题，升级给人类
+
+**绝不**忽略升级或在没有更改的情况下强制同一模型重试。如果 implementer 说它卡住了，那就是有什么需要改变的。
+
 ## Prompt 模板
 
 - `./implementer-prompt.md` - Dispatch implementer subagent
@@ -93,7 +130,7 @@ digraph process {
 ```
 You: I'm using Subagent-Driven Development to execute this plan.
 
-[Read plan file once: docs/plans/feature-plan.md]
+[Read plan file once: docs/superpowers/plans/feature-plan.md]
 [Extract all 5 tasks with full text and context]
 [Create TodoWrite with all tasks]
 
@@ -199,6 +236,7 @@ Done!
 ## 危险信号 (Red Flags)
 
 **绝不 (Never):**
+- 未经明确用户同意在 main/master 分支上开始实施
 - 跳过审查 (spec 合规 或 代码质量)
 - 在未解决问题的情况下继续
 - 并行 dispatch 多个 implementation subagents (冲突)
@@ -229,6 +267,7 @@ Done!
 ## 集成 (Integration)
 
 **必需的工作流 skills:**
+- **superpowers:using-git-worktrees** - 确保隔离的工作区 (创建或验证现有的)
 - **superpowers:writing-plans** - 创建此 skill 执行的 plan
 - **superpowers:requesting-code-review** - Reviewer subagents 的 code review 模板
 - **superpowers:finishing-a-development-branch** - 所有任务后的完成开发

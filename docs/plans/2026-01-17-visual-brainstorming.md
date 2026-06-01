@@ -1,6 +1,6 @@
 # 视觉头脑风暴伴侣实施计划
 
-> **供 agent 工作者使用:** 必需子技能: 使用 superpowers:executing-plans 逐任务实施此计划。
+> **供 agent 工作者使用:** 必需 sub-skill: 使用 superpowers:executing-plans 逐任务实施此计划。
 
 **目标:** 为 Claude 提供基于浏览器的视觉伴侣用于头脑风暴会话 - 在终端对话旁边显示模型、原型和交互式选择。
 

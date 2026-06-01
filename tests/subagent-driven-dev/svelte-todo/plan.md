@@ -4,7 +4,7 @@
 
 ## 上下文
 
-使用 Svelte 构建 todo 列表应用。完整规格见 `design.md`。
+使用 Svelte 构建 todo 列表应用。完整规范见 `design.md`。
 
 ## 任务
 

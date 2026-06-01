@@ -1,41 +1,41 @@
-# Zero-Dependency Brainstorm Server Implementation Plan
+# 零依赖 Brainstorm 服务器实施计划
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **面向 agentic worker：** 必须使用 superpowers:subagent-driven-development（如果有 subagent）或 superpowers:executing-plans 来执行此计划。步骤使用复选框（`- [ ]`）语法进行跟踪。
 
-**Goal:** Replace the brainstorm server's vendored node_modules with a single zero-dependency `server.js` using Node built-ins.
+**目标：** 用一个使用 Node 内置模块的零依赖 `server.js` 替换 brainstorm 服务器的 vendored node_modules。
 
-**Architecture:** Single file with WebSocket protocol (RFC 6455 text frames), HTTP server (`http` module), and file watching (`fs.watch`). Exports protocol functions for unit testing when required as a module.
+**架构：** 单文件，包含 WebSocket 协议（RFC 6455 文本帧）、HTTP 服务器（`http` 模块）和文件监视（`fs.watch`）。作为模块 require 时导出协议函数用于单元测试。
 
-**Tech Stack:** Node.js built-ins only: `http`, `crypto`, `fs`, `path`
+**技术栈：** 仅 Node.js 内置模块：`http`、`crypto`、`fs`、`path`
 
-**Spec:** `docs/superpowers/specs/2026-03-11-zero-dep-brainstorm-server-design.md`
+**规格文档：** `docs/superpowers/specs/2026-03-11-zero-dep-brainstorm-server-design.md`
 
-**Existing tests:** `tests/brainstorm-server/ws-protocol.test.js` (unit), `tests/brainstorm-server/server.test.js` (integration)
-
----
-
-## File Map
-
-- **Create:** `skills/brainstorming/scripts/server.js` — the zero-dep replacement
-- **Modify:** `skills/brainstorming/scripts/start-server.sh:94,100` — change `index.js` to `server.js`
-- **Modify:** `.gitignore:6` — remove the `!skills/brainstorming/scripts/node_modules/` exception
-- **Delete:** `skills/brainstorming/scripts/index.js`
-- **Delete:** `skills/brainstorming/scripts/package.json`
-- **Delete:** `skills/brainstorming/scripts/package-lock.json`
-- **Delete:** `skills/brainstorming/scripts/node_modules/` (714 files)
-- **No changes:** `skills/brainstorming/scripts/helper.js`, `skills/brainstorming/scripts/frame-template.html`, `skills/brainstorming/scripts/stop-server.sh`
+**现有测试：** `tests/brainstorm-server/ws-protocol.test.js`（单元）、`tests/brainstorm-server/server.test.js`（集成）
 
 ---
 
-## Chunk 1: WebSocket Protocol Layer
+## 文件映射
 
-### Task 1: Implement WebSocket protocol exports
+- **创建：** `skills/brainstorming/scripts/server.js` -- 零依赖替代品
+- **修改：** `skills/brainstorming/scripts/start-server.sh:94,100` -- 将 `index.js` 改为 `server.js`
+- **修改：** `.gitignore:6` -- 移除 `!skills/brainstorming/scripts/node_modules/` 例外
+- **删除：** `skills/brainstorming/scripts/index.js`
+- **删除：** `skills/brainstorming/scripts/package.json`
+- **删除：** `skills/brainstorming/scripts/package-lock.json`
+- **删除：** `skills/brainstorming/scripts/node_modules/`（714 个文件）
+- **不变：** `skills/brainstorming/scripts/helper.js`、`skills/brainstorming/scripts/frame-template.html`、`skills/brainstorming/scripts/stop-server.sh`
 
-**Files:**
-- Create: `skills/brainstorming/scripts/server.js`
-- Test: `tests/brainstorm-server/ws-protocol.test.js` (already exists)
+---
 
-- [ ] **Step 1: Create server.js with OPCODES constant and computeAcceptKey**
+## Chunk 1：WebSocket 协议层
+
+### Task 1：实现 WebSocket 协议导出
+
+**文件：**
+- 创建：`skills/brainstorming/scripts/server.js`
+- 测试：`tests/brainstorm-server/ws-protocol.test.js`（已存在）
+
+- [ ] **Step 1：创建包含 OPCODES 常量和 computeAcceptKey 的 server.js**
 
 ```js
 const crypto = require('crypto');
@@ -43,17 +43,18 @@ const crypto = require('crypto');
 const OPCODES = { TEXT: 0x01, CLOSE: 0x08, PING: 0x09, PONG: 0x0A };
 const WS_MAGIC = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
 
+// 从客户端的 Sec-WebSocket-Key 计算 Sec-WebSocket-Accept
 function computeAcceptKey(clientKey) {
   return crypto.createHash('sha1').update(clientKey + WS_MAGIC).digest('base64');
 }
 ```
 
-- [ ] **Step 2: Implement encodeFrame**
+- [ ] **Step 2：实现 encodeFrame**
 
-Server frames are never masked. Three length encodings:
-- payload < 126: 2-byte header (FIN+opcode, length)
-- 126-65535: 4-byte header (FIN+opcode, 126, 16-bit length)
-- &gt; 65535: 10-byte header (FIN+opcode, 127, 64-bit length)
+服务器帧永不屏蔽。三种长度编码：
+- payload < 126：2 字节头（FIN+opcode, length）
+- 126-65535：4 字节头（FIN+opcode, 126, 16-bit length）
+- > 65535：10 字节头（FIN+opcode, 127, 64-bit length）
 
 ```js
 function encodeFrame(opcode, payload) {
@@ -81,9 +82,9 @@ function encodeFrame(opcode, payload) {
 }
 ```
 
-- [ ] **Step 3: Implement decodeFrame**
+- [ ] **Step 3：实现 decodeFrame**
 
-Client frames are always masked. Returns `{ opcode, payload, bytesConsumed }` or `null` for incomplete. Throws on unmasked frames.
+客户端帧始终屏蔽。返回 `{ opcode, payload, bytesConsumed }`，不完整时返回 `null`。未屏蔽帧抛出异常。
 
 ```js
 function decodeFrame(buffer) {
@@ -123,18 +124,18 @@ function decodeFrame(buffer) {
 }
 ```
 
-- [ ] **Step 4: Add module exports at the bottom of the file**
+- [ ] **Step 4：在文件底部添加模块导出**
 
 ```js
 module.exports = { computeAcceptKey, encodeFrame, decodeFrame, OPCODES };
 ```
 
-- [ ] **Step 5: Run unit tests**
+- [ ] **Step 5：运行单元测试**
 
-Run: `cd tests/brainstorm-server && node ws-protocol.test.js`
-Expected: All tests pass (handshake, encoding, decoding, boundaries, edge cases)
+运行：`cd tests/brainstorm-server && node ws-protocol.test.js`
+预期：所有测试通过（握手、编码、解码、边界、边界情况）
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 6：提交**
 
 ```bash
 git add skills/brainstorming/scripts/server.js
@@ -143,15 +144,15 @@ git commit -m "Add WebSocket protocol layer for zero-dep brainstorm server"
 
 ---
 
-## Chunk 2: HTTP Server and Application Logic
+## Chunk 2：HTTP 服务器和应用逻辑
 
-### Task 2: Add HTTP server, file watching, and WebSocket connection handling
+### Task 2：添加 HTTP 服务器、文件监视和 WebSocket 连接处理
 
-**Files:**
-- Modify: `skills/brainstorming/scripts/server.js`
-- Test: `tests/brainstorm-server/server.test.js` (already exists)
+**文件：**
+- 修改：`skills/brainstorming/scripts/server.js`
+- 测试：`tests/brainstorm-server/server.test.js`（已存在）
 
-- [ ] **Step 1: Add configuration and constants at top of server.js (after requires)**
+- [ ] **Step 1：在 server.js 顶部添加配置和常量（在 requires 之后）**
 
 ```js
 const http = require('http');
@@ -170,9 +171,9 @@ const MIME_TYPES = {
 };
 ```
 
-- [ ] **Step 2: Add WAITING_PAGE, template loading at module scope, and helper functions**
+- [ ] **Step 2：在模块作用域添加 WAITING_PAGE、模板加载和辅助函数**
 
-Load `frameTemplate` and `helperInjection` at module scope so they're accessible to `wrapInFrame` and `handleRequest`. They only read files from `__dirname` (the scripts directory), which is valid whether the module is required or run directly.
+在模块作用域加载 `frameTemplate` 和 `helperInjection`，使它们对 `wrapInFrame` 和 `handleRequest` 可用。它们只从 `__dirname`（scripts 目录）读取文件，无论模块被 require 还是直接运行都有效。
 
 ```js
 const WAITING_PAGE = `<!DOCTYPE html>
@@ -209,7 +210,7 @@ function getNewestScreen() {
 }
 ```
 
-- [ ] **Step 3: Add HTTP request handler**
+- [ ] **Step 3：添加 HTTP 请求处理程序**
 
 ```js
 function handleRequest(req, res) {
@@ -228,7 +229,7 @@ function handleRequest(req, res) {
     res.writeHead(200, { 'Content-Type': 'text/html' });
     res.end(html);
   } else if (req.method === 'GET' && req.url.startsWith('/files/')) {
-    const fileName = req.url.slice(7); // strip '/files/'
+    const fileName = req.url.slice(7); // 去掉 '/files/'
     const filePath = path.join(SCREEN_DIR, path.basename(fileName));
     if (!fs.existsSync(filePath)) {
       res.writeHead(404);
@@ -246,7 +247,7 @@ function handleRequest(req, res) {
 }
 ```
 
-- [ ] **Step 4: Add WebSocket connection handling**
+- [ ] **Step 4：添加 WebSocket 连接处理**
 
 ```js
 const clients = new Set();
@@ -294,7 +295,7 @@ function handleUpgrade(req, socket) {
         case OPCODES.PONG:
           break;
         default:
-          // Unsupported opcode — close with 1003
+          // 不支持的 opcode -- 以 1003 关闭
           const closeBuf = Buffer.alloc(2);
           closeBuf.writeUInt16BE(1003);
           socket.end(encodeFrame(OPCODES.CLOSE, closeBuf));
@@ -331,17 +332,17 @@ function broadcast(msg) {
 }
 ```
 
-- [ ] **Step 5: Add debounce timer map**
+- [ ] **Step 5：添加防抖计时器映射**
 
 ```js
 const debounceTimers = new Map();
 ```
 
-File watching logic is inlined in `startServer` (Step 6) to keep watcher lifecycle together with server lifecycle and include an `error` handler per spec.
+文件监视逻辑内联在 `startServer` 中（Step 6），以将 watcher 生命周期与服务器生命周期保持一致，并按规格包含 `error` 处理程序。
 
-- [ ] **Step 6: Add startServer function and conditional main**
+- [ ] **Step 6：添加 startServer 函数和条件主入口**
 
-`frameTemplate` and `helperInjection` are already at module scope (Step 2). `startServer` just creates the screen dir, starts the HTTP server, watcher, and logs startup info.
+`frameTemplate` 和 `helperInjection` 已在模块作用域（Step 2）。`startServer` 只创建屏幕目录、启动 HTTP 服务器、watcher，并记录启动信息。
 
 ```js
 function startServer() {
@@ -384,14 +385,14 @@ if (require.main === module) {
 }
 ```
 
-- [ ] **Step 7: Run integration tests**
+- [ ] **Step 7：运行集成测试**
 
-The test directory already has a `package.json` with `ws` as a dependency. Install it if needed, then run tests.
+测试目录已有一个带有 `ws` 依赖的 `package.json`。如需安装，然后运行测试。
 
-Run: `cd tests/brainstorm-server && npm install && node server.test.js`
-Expected: All tests pass
+运行：`cd tests/brainstorm-server && npm install && node server.test.js`
+预期：所有测试通过
 
-- [ ] **Step 8: Commit**
+- [ ] **Step 8：提交**
 
 ```bash
 git add skills/brainstorming/scripts/server.js
@@ -400,31 +401,31 @@ git commit -m "Add HTTP server, WebSocket handling, and file watching to server.
 
 ---
 
-## Chunk 3: Swap and Cleanup
+## Chunk 3：替换和清理
 
-### Task 3: Update start-server.sh and remove old files
+### Task 3：更新 start-server.sh 并移除旧文件
 
-**Files:**
-- Modify: `skills/brainstorming/scripts/start-server.sh:94,100`
-- Modify: `.gitignore:6`
-- Delete: `skills/brainstorming/scripts/index.js`
-- Delete: `skills/brainstorming/scripts/package.json`
-- Delete: `skills/brainstorming/scripts/package-lock.json`
-- Delete: `skills/brainstorming/scripts/node_modules/` (entire directory)
+**文件：**
+- 修改：`skills/brainstorming/scripts/start-server.sh:94,100`
+- 修改：`.gitignore:6`
+- 删除：`skills/brainstorming/scripts/index.js`
+- 删除：`skills/brainstorming/scripts/package.json`
+- 删除：`skills/brainstorming/scripts/package-lock.json`
+- 删除：`skills/brainstorming/scripts/node_modules/`（整个目录）
 
-- [ ] **Step 1: Update start-server.sh — change `index.js` to `server.js`**
+- [ ] **Step 1：更新 start-server.sh -- 将 `index.js` 改为 `server.js`**
 
-Two lines to change:
+需要修改两行：
 
-Line 94: `env BRAINSTORM_DIR="$SCREEN_DIR" BRAINSTORM_HOST="$BIND_HOST" BRAINSTORM_URL_HOST="$URL_HOST" node server.js`
+第 94 行：`env BRAINSTORM_DIR="$SCREEN_DIR" BRAINSTORM_HOST="$BIND_HOST" BRAINSTORM_URL_HOST="$URL_HOST" node server.js`
 
-Line 100: `nohup env BRAINSTORM_DIR="$SCREEN_DIR" BRAINSTORM_HOST="$BIND_HOST" BRAINSTORM_URL_HOST="$URL_HOST" node server.js > "$LOG_FILE" 2>&1 &`
+第 100 行：`nohup env BRAINSTORM_DIR="$SCREEN_DIR" BRAINSTORM_HOST="$BIND_HOST" BRAINSTORM_URL_HOST="$URL_HOST" node server.js > "$LOG_FILE" 2>&1 &`
 
-- [ ] **Step 2: Remove the gitignore exception for node_modules**
+- [ ] **Step 2：移除 node_modules 的 gitignore 例外**
 
-In `.gitignore`, delete line 6: `!skills/brainstorming/scripts/node_modules/`
+在 `.gitignore` 中，删除第 6 行：`!skills/brainstorming/scripts/node_modules/`
 
-- [ ] **Step 3: Delete old files**
+- [ ] **Step 3：删除旧文件**
 
 ```bash
 git rm skills/brainstorming/scripts/index.js
@@ -433,46 +434,46 @@ git rm skills/brainstorming/scripts/package-lock.json
 git rm -r skills/brainstorming/scripts/node_modules/
 ```
 
-- [ ] **Step 4: Run both test suites**
+- [ ] **Step 4：运行两个测试套件**
 
-Run: `cd tests/brainstorm-server && node ws-protocol.test.js && node server.test.js`
-Expected: All tests pass
+运行：`cd tests/brainstorm-server && node ws-protocol.test.js && node server.test.js`
+预期：所有测试通过
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 5：提交**
 
 ```bash
 git add skills/brainstorming/scripts/ .gitignore
 git commit -m "Remove vendored node_modules, swap to zero-dep server.js"
 ```
 
-### Task 4: Manual smoke test
+### Task 4：手动冒烟测试
 
-- [ ] **Step 1: Start the server manually**
+- [ ] **Step 1：手动启动服务器**
 
 ```bash
 cd skills/brainstorming/scripts
 BRAINSTORM_DIR=/tmp/brainstorm-smoke BRAINSTORM_PORT=9876 node server.js
 ```
 
-Expected: `server-started` JSON printed with port 9876
+预期：打印包含 port 9876 的 `server-started` JSON
 
-- [ ] **Step 2: Open browser to http://localhost:9876**
+- [ ] **Step 2：在浏览器中打开 http://localhost:9876**
 
-Expected: Waiting page with "Waiting for Claude to push a screen..."
+预期：显示等待页面"Waiting for Claude to push a screen..."
 
-- [ ] **Step 3: Write an HTML file to the screen directory**
+- [ ] **Step 3：向屏幕目录写入 HTML 文件**
 
 ```bash
 echo '<h2>Hello from smoke test</h2>' > /tmp/brainstorm-smoke/test.html
 ```
 
-Expected: Browser reloads and shows "Hello from smoke test" wrapped in frame template
+预期：浏览器重载并显示包装在 frame template 中的"Hello from smoke test"
 
-- [ ] **Step 4: Verify WebSocket works — check browser console**
+- [ ] **Step 4：验证 WebSocket 工作 -- 检查浏览器控制台**
 
-Open browser dev tools. The WebSocket connection should show as connected (no errors in console). The frame template's status indicator should show "Connected".
+打开浏览器开发者工具。WebSocket 连接应显示为已连接（控制台无错误）。frame template 的状态指示器应显示"Connected"。
 
-- [ ] **Step 5: Stop server with Ctrl-C, clean up**
+- [ ] **Step 5：用 Ctrl-C 停止服务器，清理**
 
 ```bash
 rm -rf /tmp/brainstorm-smoke

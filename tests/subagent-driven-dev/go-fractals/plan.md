@@ -4,7 +4,7 @@
 
 ## 上下文
 
-构建一个生成 ASCII 分形的 CLI 工具。完整规格见 `design.md`。
+构建一个生成 ASCII 分形的 CLI 工具。完整规范见 `design.md`。
 
 ## 任务
 

@@ -12,7 +12,7 @@
 多层验证: "We made the bug impossible"
 
 不同的层捕获不同的情况:
-- 入口验证捕获大多数 bugs
+- 入口验证捕获大多数 bug
 - 业务逻辑捕获边界情况
 - 环境守卫防止特定上下文的危险
 - 调试日志在其他层失败时提供帮助
@@ -69,7 +69,7 @@ async function gitInit(directory: string) {
 }
 ```
 
-### Layer 4: 调试仪器 (Debug Instrumentation)
+### Layer 4: 调试插桩 (Debug Instrumentation)
 **目的:** 捕获取证上下文
 
 ```typescript
@@ -113,7 +113,7 @@ Bug: 空 `projectDir` 导致源代码中 `git init`
 
 ## 关键见解 (Key Insight)
 
-所有四个层都是必要的。在测试期间，每一层都捕获了其他层错过的 bugs:
+所有四个层都是必要的。在测试期间，每一层都捕获了其他层错过的 bug:
 - 不同的代码路径绕过了入口验证
 - Mocks 绕过了业务逻辑检查
 - 不同平台上的边界情况需要环境守卫

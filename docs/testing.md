@@ -56,7 +56,7 @@ cd tests/claude-code
 2.  **Execution**: 以 headless 模式运行带有 skill 的 Claude Code
 3.  **Verification**: 解析会话记录 (`.jsonl` file) 以验证:
     - Skill 工具被调用
-    - Subagents 被分派 (Task tool)
+    - Subagents 被 dispatch (Task tool)
     - TodoWrite 用于跟踪
     - 实施文件被创建
     - 测试通过

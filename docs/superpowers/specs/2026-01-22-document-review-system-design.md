@@ -1,136 +1,136 @@
-# Document Review System Design
+# 文档审查系统设计
 
-## Overview
+## 概述
 
-Add two new review stages to the superpowers workflow:
+在 superpowers 工作流中添加两个新的审查阶段：
 
-1. **Spec Document Review** - After brainstorming, before writing-plans
-2. **Plan Document Review** - After writing-plans, before implementation
+1. **Spec 文档审查** - 在 brainstorming 之后，writing-plans 之前
+2. **Plan 文档审查** - 在 writing-plans 之后，实施之前
 
-Both follow the iterative loop pattern used by implementation reviews.
+两者都遵循实施审查所使用的迭代循环模式。
 
-## Spec Document Reviewer
+## Spec 文档审查者
 
-**Purpose:** Verify the spec is complete, consistent, and ready for implementation planning.
+**目的：** 验证 spec 完整、一致，并准备好进行实施规划。
 
-**Location:** `skills/brainstorming/spec-document-reviewer-prompt.md`
+**位置：** `skills/brainstorming/spec-document-reviewer-prompt.md`
 
-**What it checks for:**
+**检查内容：**
 
-| Category | What to Look For |
+| 类别 | 要查找的内容 |
 |----------|------------------|
-| Completeness | TODOs, placeholders, "TBD", incomplete sections |
-| Coverage | Missing error handling, edge cases, integration points |
-| Consistency | Internal contradictions, conflicting requirements |
-| Clarity | Ambiguous requirements |
-| YAGNI | Unrequested features, over-engineering |
+| 完整性 | TODO、占位符、"TBD"、不完整的章节 |
+| 覆盖度 | 缺失的错误处理、边界情况、集成点 |
+| 一致性 | 内部矛盾、冲突的需求 |
+| 清晰度 | 模糊的需求 |
+| YAGNI | 未被要求的功能、过度工程 |
 
-**Output format:**
+**输出格式：**
 ```
-## Spec Review
+## Spec 审查
 
-**Status:** Approved | Issues Found
+**状态：** 通过 | 发现问题
 
-**Issues (if any):**
-- [Section X]: [issue] - [why it matters]
+**问题（如有）：**
+- [章节 X]: [问题] - [为什么重要]
 
-**Recommendations (advisory):**
-- [suggestions that don't block approval]
+**建议（参考性质）：**
+- [不阻碍通过的建议]
 ```
 
-**Review loop:** Issues found -> brainstorming agent fixes -> re-review -> repeat until approved.
+**审查循环：** 发现问题 -> brainstorming agent 修复 -> 重新审查 -> 重复直到通过。
 
-**Dispatch mechanism:** Use the Task tool with `subagent_type: general-purpose`. The reviewer prompt template provides the full prompt. The brainstorming skill's controller dispatches the reviewer.
+**调度机制：** 使用 Task tool 配合 `subagent_type: general-purpose`。审查者 prompt 模板提供完整的 prompt。brainstorming skill 的 controller 调度审查者。
 
-## Plan Document Reviewer
+## Plan 文档审查者
 
-**Purpose:** Verify the plan is complete, matches the spec, and has proper task decomposition.
+**目的：** 验证 plan 完整、与 spec 匹配，并具有适当的任务分解。
 
-**Location:** `skills/writing-plans/plan-document-reviewer-prompt.md`
+**位置：** `skills/writing-plans/plan-document-reviewer-prompt.md`
 
-**What it checks for:**
+**检查内容：**
 
-| Category | What to Look For |
+| 类别 | 要查找的内容 |
 |----------|------------------|
-| Completeness | TODOs, placeholders, incomplete tasks |
-| Spec Alignment | Plan covers spec requirements, no scope creep |
-| Task Decomposition | Tasks atomic, clear boundaries |
-| Task Syntax | Checkbox syntax on tasks and steps |
-| Chunk Size | Each chunk under 1000 lines |
+| 完整性 | TODO、占位符、不完整的任务 |
+| Spec 对齐 | Plan 覆盖 spec 需求，没有范围蔓延 |
+| 任务分解 | 任务原子化、边界清晰 |
+| 任务语法 | 任务和步骤使用复选框语法 |
+| Chunk 大小 | 每个 chunk 不超过 1000 行 |
 
-**Chunk definition:** A chunk is a logical grouping of tasks within the plan document, delimited by `## Chunk N: <name>` headings. The writing-plans skill creates these boundaries based on logical phases (e.g., "Foundation", "Core Features", "Integration"). Each chunk should be self-contained enough to review independently.
+**Chunk 定义：** chunk 是 plan 文档内按 `## Chunk N: <name>` 标题划分的任务逻辑分组。writing-plans skill 基于逻辑阶段（例如"基础"、"核心功能"、"集成"）创建这些边界。每个 chunk 应足够自包含，可以独立审查。
 
-**Spec alignment verification:** The reviewer receives both:
-1. The plan document (or current chunk)
-2. The path to the spec document for reference
+**Spec 对齐验证：** 审查者接收：
+1. Plan 文档（或当前 chunk）
+2. Spec 文档路径供参考
 
-The reviewer reads both and compares requirements coverage.
+审查者阅读两者并比较需求覆盖情况。
 
-**Output format:** Same as spec reviewer, but scoped to the current chunk.
+**输出格式：** 与 spec 审查者相同，但限定在当前 chunk 范围内。
 
-**Review process (chunk-by-chunk):**
-1. Writing-plans creates chunk N
-2. Controller dispatches plan-document-reviewer with chunk N content and spec path
-3. Reviewer reads chunk and spec, returns verdict
-4. If issues: writing-plans agent fixes chunk N, goto step 2
-5. If approved: proceed to chunk N+1
-6. Repeat until all chunks approved
+**审查流程（逐 chunk）：**
+1. writing-plans 创建 chunk N
+2. Controller 调度 plan-document-reviewer 并传入 chunk N 内容和 spec 路径
+3. 审查者阅读 chunk 和 spec，返回结论
+4. 如果有问题：writing-plans agent 修复 chunk N，回到步骤 2
+5. 如果通过：继续处理 chunk N+1
+6. 重复直到所有 chunk 通过
 
-**Dispatch mechanism:** Same as spec reviewer - Task tool with `subagent_type: general-purpose`.
+**调度机制：** 与 spec 审查者相同 - 使用 Task tool 配合 `subagent_type: general-purpose`。
 
-## Updated Workflow
+## 更新后的工作流
 
 ```
-brainstorming -> spec -> SPEC REVIEW LOOP -> writing-plans -> plan -> PLAN REVIEW LOOP -> implementation
+brainstorming -> spec -> SPEC 审查循环 -> writing-plans -> plan -> PLAN 审查循环 -> 实施
 ```
 
-**Spec Review Loop:**
-1. Spec complete
-2. Dispatch reviewer
-3. If issues: fix -> goto 2
-4. If approved: proceed
+**Spec 审查循环：**
+1. Spec 完成
+2. 调度审查者
+3. 如果有问题：修复 -> 回到 2
+4. 如果通过：继续
 
-**Plan Review Loop:**
-1. Chunk N complete
-2. Dispatch reviewer for chunk N
-3. If issues: fix -> goto 2
-4. If approved: next chunk or implementation
+**Plan 审查循环：**
+1. Chunk N 完成
+2. 为 chunk N 调度审查者
+3. 如果有问题：修复 -> 回到 2
+4. 如果通过：下一个 chunk 或进入实施
 
-## Markdown Task Syntax
+## Markdown 任务语法
 
-Tasks and steps use checkbox syntax:
+任务和步骤使用复选框语法：
 
 ```markdown
-- [ ] ### Task 1: Name
+- [ ] ### Task 1: 名称
 
-- [ ] **Step 1:** Description
-  - File: path
-  - Command: cmd
+- [ ] **Step 1:** 描述
+  - 文件：path
+  - 命令：cmd
 ```
 
-## Error Handling
+## 错误处理
 
-**Review loop termination:**
-- No hard iteration limit - loops continue until reviewer approves
-- If loop exceeds 5 iterations, the controller should surface this to the human for guidance
-- The human can choose to: continue iterating, approve with known issues, or abort
+**审查循环终止：**
+- 没有硬性的迭代限制 - 循环继续直到审查者通过
+- 如果循环超过 5 次迭代，controller 应提交给人类进行指导
+- 人类可以选择：继续迭代、带着已知问题通过、或中止
 
-**Disagreement handling:**
-- Reviewers are advisory - they flag issues but don't block
-- If the agent believes reviewer feedback is incorrect, it should explain why in its fix
-- If disagreement persists after 3 iterations on the same issue, surface to human
+**分歧处理：**
+- 审查者是参考性质的 - 他们标记问题但不阻碍
+- 如果 agent 认为审查者反馈不正确，应在修复中解释原因
+- 如果同一问题在 3 次迭代后仍有分歧，提交给人类
 
-**Malformed reviewer output:**
-- Controller should validate reviewer output has required fields (Status, Issues if applicable)
-- If malformed, re-dispatch reviewer with a note about expected format
-- After 2 malformed responses, surface to human
+**格式错误的审查者输出：**
+- Controller 应验证审查者输出包含必需字段（状态、问题（如适用））
+- 如果格式错误，重新调度审查者并附上关于预期格式的说明
+- 2 次格式错误的回复后，提交给人类
 
-## Files to Change
+## 需要更改的文件
 
-**New files:**
+**新文件：**
 - `skills/brainstorming/spec-document-reviewer-prompt.md`
 - `skills/writing-plans/plan-document-reviewer-prompt.md`
 
-**Modified files:**
-- `skills/brainstorming/SKILL.md` - add review loop after spec written
-- `skills/writing-plans/SKILL.md` - add chunk-by-chunk review loop, update task syntax examples
+**修改的文件：**
+- `skills/brainstorming/SKILL.md` - 在 spec 编写后添加审查循环
+- `skills/writing-plans/SKILL.md` - 添加逐 chunk 审查循环，更新任务语法示例

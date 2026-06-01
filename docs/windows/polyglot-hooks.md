@@ -148,7 +148,7 @@ exit /b
 CMDBLOCK
 
 # Unix shell 从这里开始运行
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SCRIPT_NAME="$1"
 shift
 "${SCRIPT_DIR}/${SCRIPT_NAME}" "$@"

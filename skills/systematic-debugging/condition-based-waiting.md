@@ -89,8 +89,8 @@ async function waitFor<T>(
 **❌ 无超时:** 如果条件从未满足则永久循环
 **✅ 修复:** 总是包含带有清晰错误的超时
 
-**❌ 陈旧数据:** 循环前缓存状态
-**✅ 修复:** 在循环内调用 getter获取新鲜数据
+**❌ 数据过时:** 循环前缓存状态
+**✅ 修复:** 在循环内调用 getter 获取新鲜数据
 
 ## 何时任意超时是正确的
 
@@ -112,4 +112,4 @@ await new Promise(r => setTimeout(r, 200));   // Then: wait for timed behavior
 - 修复了 3 个文件中的 15 个不稳定测试
 - 通过率: 60% → 100%
 - 执行时间: 快 40%
--不再有 race conditions
+- 不再有 race conditions

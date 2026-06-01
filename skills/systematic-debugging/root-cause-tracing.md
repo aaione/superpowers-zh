@@ -2,7 +2,7 @@
 
 ## 概述 (Overview)
 
-Bugs 经常出现在调用堆栈深处（git init 在错误的目录，文件创建在错误的位置，数据库用错误的路径打开）。你的本能是修复错误出现的地方，但那是治疗症状。
+Bugs 经常出现在调用堆栈深处（git init 在错误的目录，文件创建在错误的位置，数据库用错误的路径打开）。你的本能是修复错误出现的地方，但那只是治标不治本。
 
 **核心原则:** 向后追踪调用链，直到找到原始触发器，然后在源头修复。
 
@@ -33,7 +33,7 @@ digraph when_to_use {
 
 ### 1. 观察症状
 ```
-Error: git init failed in /Users/jesse/project/packages/core
+Error: git init failed in ~/project/packages/core
 ```
 
 ### 2. 找到直接原因
@@ -65,7 +65,7 @@ Project.create('name', context.tempDir); // Accessed before beforeEach!
 
 ## 添加 Stack Traces
 
-当你无法手动追踪时，添加仪器:
+当你无法手动追踪时，添加插桩代码 (instrumentation):
 
 ```typescript
 // Before the problematic operation

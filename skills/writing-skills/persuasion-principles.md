@@ -84,7 +84,7 @@ LLMs 像人类一样对同样的说服原则做出反应。理解这种心理学
 ❌ Some people find TodoWrite helpful for checklists.
 ```
 
-### 5. 一致 (Unity)
+### 5. 认同 (Unity)
 **它是什么:** 共享身份，"we-ness"，内群体归属感。
 
 **如何在 skills 中工作:**
@@ -144,7 +144,7 @@ LLMs 像人类一样对同样的说服原则做出反应。理解这种心理学
 - "When X, do Y" 比 "generally do Y" 更有效
 - 减少合规的认知负荷
 
-**LLMs 是类人的 (parahuman):**
+**LLMs 是准人类的 (parahuman):**
 - 在包含这些模式的人类文本上训练
 - 权威语言在训练数据中先于合规
 - 频繁建模承诺序列 (声明 → 行动)

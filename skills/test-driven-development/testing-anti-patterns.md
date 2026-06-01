@@ -277,7 +277,7 @@ TDD cycle:
 | Test-only methods in production | 转移到测试工具 |
 | Mock without understanding | 首先理解依赖关系，mock 最小化 |
 | Incomplete mocks | 完整镜像真实 API |
-| Tests as afterthought | TDD - tests first |
+| Tests as afterthought | TDD - 测试先行 |
 | Over-complex mocks | 考虑集成测试 |
 
 ## 危险信号 (Red Flags)

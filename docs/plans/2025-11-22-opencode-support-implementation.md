@@ -1,6 +1,6 @@
 # OpenCode 支持实施计划
 
-> **供 Claude 使用:** 必需子技能: 使用 superpowers:executing-plans 逐任务实施此计划。
+> **供 Claude 使用:** 必需 sub-skill: 使用 superpowers:executing-plans 逐任务实施此计划。
 
 **目标:** 使用原生 JavaScript 插件为 OpenCode.ai 添加完整的 superpowers 支持，该插件与现有 Codex 实现共享核心功能。
 
@@ -1045,7 +1045,7 @@ ls -l .opencode/INSTALL.md
 **步骤 1: 检查 git 状态**
 
 运行: `git status`
-预期: 工作树干净，所有更改已提交
+预期: worktree 干净，所有更改已提交
 
 **步骤 2: 审查提交日志**
 
@@ -1091,4 +1091,4 @@ ls -l .opencode/INSTALL.md
 - [ ] 安装指南已创建
 - [ ] README 和 RELEASE-NOTES 已更新
 - [ ] 所有更改已提交
-- [ ] 工作树干净
+- [ ] worktree 干净

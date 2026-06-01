@@ -3,112 +3,94 @@
 ## 先决条件 (Prerequisites)
 
 - 已安装 [OpenCode.ai](https://opencode.ai)
-- 已安装 Git
 
-## 安装步骤 (Installation Steps)
+## 安装 (Installation)
 
-### 1. Clone Superpowers
+在你的 `opencode.json`（全局或项目级）的 `plugin` 数组中添加 superpowers:
 
-```bash
-git clone https://github.com/obra/superpowers.git ~/.config/opencode/superpowers
+```json
+{
+  "plugin": ["superpowers@git+https://github.com/obra/superpowers.git"]
+}
 ```
 
-### 2. 注册 Plugin
+重启 OpenCode。插件通过 OpenCode 的插件管理器安装并注册所有 skills。
 
-创建一个 symlink 以便 OpenCode 发现 plugin:
+通过询问验证: "Tell me about your superpowers"
+
+OpenCode 使用自己的插件安装方式。如果你也使用 Claude Code、Codex 或其他 harness，请分别为每个平台单独安装 Superpowers。
+
+### 从旧的基于 symlink 的安装迁移
+
+如果你之前使用 `git clone` 和 symlinks 安装了 superpowers，请移除旧的设置:
 
 ```bash
-mkdir -p ~/.config/opencode/plugins
+# 移除旧的 symlinks
 rm -f ~/.config/opencode/plugins/superpowers.js
-ln -s ~/.config/opencode/superpowers/.opencode/plugins/superpowers.js ~/.config/opencode/plugins/superpowers.js
-```
-
-### 3. Symlink Skills
-
-创建一个 symlink 以便 OpenCode 的原生 skill 工具发现 superpowers skills:
-
-```bash
-mkdir -p ~/.config/opencode/skills
 rm -rf ~/.config/opencode/skills/superpowers
-ln -s ~/.config/opencode/superpowers/skills ~/.config/opencode/skills/superpowers
+
+# 可选地移除克隆的仓库
+rm -rf ~/.config/opencode/superpowers
+
+# 如果你为 superpowers 添加了 skills.paths，从 opencode.json 中移除
 ```
 
-### 4. 重启 OpenCode
-
-重启 OpenCode。Plugin 将自动注入 superpowers 上下文。
-
-通过询问验证: "do you have superpowers?"
+然后按照上面的安装步骤操作。
 
 ## 用法 (Usage)
 
-### 查找 Skills
-
-使用 OpenCode 的原生 `skill` 工具列出可用的 skills:
+使用 OpenCode 的原生 `skill` 工具:
 
 ```
 use skill tool to list skills
-```
-
-### 加载 Skill
-
-使用 OpenCode 的原生 `skill` 工具加载特定的 skill:
-
-```
 use skill tool to load superpowers/brainstorming
 ```
 
-### 个人 Skills (Personal Skills)
-
-在 `~/.config/opencode/skills/` 中创建你自己的 skills:
-
-```bash
-mkdir -p ~/.config/opencode/skills/my-skill
-```
-
-创建 `~/.config/opencode/skills/my-skill/SKILL.md`:
-
-```markdown
----
-name: my-skill
-description: Use when [condition] - [what it does]
----
-
-# My Skill
-
-[Your skill content here]
-```
-
-### 项目 Skills (Project Skills)
-
-在你项目内的 `.opencode/skills/` 中创建项目特定的 skills。
-
-**Skill 优先级:** Project skills > Personal skills > Superpowers skills
-
 ## 更新 (Updating)
 
-```bash
-cd ~/.config/opencode/superpowers
-git pull
+OpenCode 通过 git 支持的包规范安装 Superpowers。某些 OpenCode 和 Bun 版本会在 lockfile 或缓存中固定已解析的 git 依赖，因此重启可能无法获取最新的 Superpowers 提交。如果更新未出现，清除 OpenCode 的包缓存或重新安装插件。
+
+要固定到特定版本:
+
+```json
+{
+  "plugin": ["superpowers@git+https://github.com/obra/superpowers.git#v5.0.3"]
+}
 ```
 
 ## 故障排除 (Troubleshooting)
 
 ### Plugin 未加载
 
-1. 检查 plugin symlink: `ls -l ~/.config/opencode/plugins/superpowers.js`
-2. 检查源是否存在: `ls ~/.config/opencode/superpowers/.opencode/plugins/superpowers.js`
-3. 检查 OpenCode 日志以查找错误
+1. 检查日志: `opencode run --print-logs "hello" 2>&1 | grep -i superpowers`
+2. 验证你的 `opencode.json` 中的插件行是否正确
+3. 确保你运行的是最新版本的 OpenCode
+
+### Windows 安装问题
+
+某些 Windows OpenCode 构建在 git 支持的插件规范方面存在上游安装器问题，包括 `git+https` URL 的缓存路径和 Bun 无法找到 `git.exe`（即使在正常终端中可以工作）。如果 OpenCode 无法安装插件，尝试使用系统 npm 安装并指向本地包:
+
+```powershell
+npm install superpowers@git+https://github.com/obra/superpowers.git --prefix "$HOME\.config\opencode"
+```
+
+然后在 `opencode.json` 中使用已安装的包路径:
+
+```json
+{
+  "plugin": ["~/.config/opencode/node_modules/superpowers"]
+}
+```
 
 ### Skills 未找到
 
-1. 检查 skills symlink: `ls -l ~/.config/opencode/skills/superpowers`
-2. 验证它指向: `~/.config/opencode/superpowers/skills`
-3. 使用 `skill` 工具列出已发现的内容
+1. 使用 `skill` 工具列出已发现的内容
+2. 检查插件是否正在加载（见上文）
 
 ### 工具映射 (Tool mapping)
 
 当 skills 引用 Claude Code 工具时:
-- `TodoWrite` → `update_plan`
+- `TodoWrite` → `todowrite`
 - `Task` with subagents → `@mention` syntax
 - `Skill` tool → OpenCode's native `skill` tool
 - File operations → your native tools
