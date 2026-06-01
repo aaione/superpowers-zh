@@ -1,3 +1,5 @@
+![](/superpowers.png)
+
 # Superpowers
 
 Superpowers 是一个完整的软件开发方法论，专为你的 coding agents 打造，建立在一套可组合的 skills 和一些确保你的 agent 使用它们的初始指令之上。
