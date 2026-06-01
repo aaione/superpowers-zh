@@ -15,15 +15,6 @@ Superpowers 是一个完整的软件开发工作流，专为你的 coding agents
 还有很多其他功能，但这是系统的核心。而且因为 skills 会自动触发，你不需要做任何特殊的事情。你的 coding agent 直觉般地拥有了 Superpowers。
 
 
-## 赞助 (Sponsorship)
-
-如果 Superpowers 帮助你完成了赚钱的事情，并且你也愿意，如果你能考虑 [赞助我的开源工作](https://github.com/sponsors/obra)，我将不胜感激。
-
-谢谢！
-
-- Jesse
-
-
 ## 安装 (Installation)
 
 **注意：** 不同平台的安装方式不同。Claude Code 有一个内置的插件系统。Codex 和 OpenCode 需要手动设置。
