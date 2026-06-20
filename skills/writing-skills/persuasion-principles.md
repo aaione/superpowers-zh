@@ -1,187 +1,186 @@
-# Persuasion Principles for Skill Design (Skill 设计的说服原则)
+# Skill 设计的说服原则（Persuasion Principles for Skill Design）
 
-## 概述 (Overview)
+## 概览
 
-LLMs 像人类一样对同样的说服原则做出反应。理解这种心理学有助于你设计更有效的 skills - 不是为了操纵，而是为了确保即使在压力下也能遵循关键实践。
+LLM 对与人类相同的说服原则做出反应。理解这种心理学有助于你设计更有效的 skill——不是为了操纵，而是为了确保关键实践即使在压力下也能被遵循。
 
-**研究基础:** Meincke et al. (2025) 在 N=28,000 的 AI 对话中测试了 7 种说服原则。说服技术使依从率增加了一倍以上 (33% → 72%, p < .001)。
+**研究基础：** Meincke 等人（2025）用 N=28,000 次 AI 对话测试了 7 个说服原则。说服技术使合规率提升了一倍以上（33% → 72%，p < .001）。
 
-## 七项原则 (The Seven Principles)
+## 七个原则
 
-### 1. 权威 (Authority)
-**它是什么:** 对专业知识、证书或官方来源的尊重。
+### 1. 权威（Authority）
+**它是什么：** 对专业知识、资质或官方来源的服从。
 
-**如何在 skills 中工作:**
-- 祈使语言: "YOU MUST", "Never", "Always"
-- 不可谈判的框架: "No exceptions"
-- 消除决策疲劳和合理化 (rationalization)
+**在 skill 中如何起作用：**
+- 祈使语言："你必须"（YOU MUST）、"绝不"（Never）、"始终"（Always）
+- 不可协商的措辞："没有例外"
+- 消除决策疲劳和自我合理化
 
-**何时使用:**
-- 纪律执行 skills (TDD, verification requirements)
+**何时使用：**
+- 强制纪律的 skill（TDD、验证要求）
 - 安全关键实践
-- 已确立的最佳实践
+- 既定的最佳实践
 
-**示例:**
+**示例：**
 ```markdown
-✅ Write code before test? Delete it. Start over. No exceptions.
-❌ Consider writing tests first when feasible.
+✅ 先写代码再写测试？删除它。从头来。没有例外。
+❌ 考虑在可行时先写测试。
 ```
 
-### 2. 承诺 (Commitment)
-**它是什么:** 与先前的行动、声明或公开宣言保持一致。
+### 2. 承诺（Commitment）
+**它是什么：** 与先前的行动、陈述或公开宣告保持一致。
 
-**如何在 skills 中工作:**
-- 要求宣布: "Announce skill usage"
-- 强制明确选择: "Choose A, B, or C"
-- 使用跟踪: Checklist 的 TodoWrite
+**在 skill 中如何起作用：**
+- 要求宣告："宣布 skill 使用"
+- 强制明确选择："选择 A、B 或 C"
+- 使用追踪：为检查清单使用 todo
 
-**何时使用:**
-- 确保 skills 实际上被遵循
+**何时使用：**
+- 确保 skill 被真正遵循
 - 多步骤流程
 - 问责机制
 
-**示例:**
+**示例：**
 ```markdown
-✅ When you find a skill, you MUST announce: "I'm using [Skill Name]"
-❌ Consider letting your partner know which skill you're using.
+✅ 当你找到一个 skill 时，你必须宣布："我在使用 [Skill 名]"
+❌ 考虑让你的伙伴知道你在用哪个 skill。
 ```
 
-### 3. 稀缺性 (Scarcity)
-**它是什么:** 来自时间限制或有限可用性的紧迫感。
+### 3. 稀缺（Scarcity）
+**它是什么：** 来自时间限制或有限可用性的紧迫感。
 
-**如何在 skills 中工作:**
-- 受时间限制的要求: "Before proceeding"
-- 顺序依赖: "Immediately after X"
+**在 skill 中如何起作用：**
+- 有时限的要求："在继续之前"
+- 顺序依赖："在 X 之后立即"
 - 防止拖延
 
-**何时使用:**
-- 立即验证要求
+**何时使用：**
+- 立即验证的要求
 - 时间敏感的工作流
-- 防止 "I'll do it later"
+- 防止"我之后再做"
 
-**示例:**
+**示例：**
 ```markdown
-✅ After completing a task, IMMEDIATELY request code review before proceeding.
-❌ You can review code when convenient.
+✅ 完成一个任务后，立即请求 code review，然后再继续。
+❌ 你可以在方便时审查代码。
 ```
 
-### 4. 社会证明 (Social Proof)
-**它是什么:** 顺从他人所做的事或被认为是正常的事。
+### 4. 社会认同（Social Proof）
+**它是什么：** 顺从他人所做或被认为是正常的行为。
 
-**如何在 skills 中工作:**
-- 普遍模式: "Every time", "Always"
-- 失败模式: "X without Y = failure"
+**在 skill 中如何起作用：**
+- 普遍模式："每一次"（Every time）、"始终"（Always）
+- 失败模式："没有 Y 的 X = 失败"
 - 建立规范
 
-**何时使用:**
-- 记录普遍实践
+**何时使用：**
+- 文档化普遍实践
 - 警告常见失败
 - 强化标准
 
-**示例:**
+**示例：**
 ```markdown
-✅ Checklists without TodoWrite tracking = steps get skipped. Every time.
-❌ Some people find TodoWrite helpful for checklists.
+✅ 没有 todo 追踪的检查清单 = 步骤被跳过。每一次。
+❌ 有些人觉得检查清单配一个 todo 列表很有帮助。
 ```
 
-### 5. 认同 (Unity)
-**它是什么:** 共享身份，"we-ness"，内群体归属感。
+### 5. 共同体（Unity）
+**它是什么：** 共享身份、"我们感"、群体内归属感。
 
-**如何在 skills 中工作:**
-- 协作语言: "our codebase", "we're colleagues"
-- 共同目标: "we both want quality"
+**在 skill 中如何起作用：**
+- 协作性语言："我们的代码库"、"我们是同事"
+- 共同目标："我们都想要质量"
 
-**何时使用:**
+**何时使用：**
 - 协作工作流
 - 建立团队文化
-- 非等级实践
+- 非层级化实践
 
-**示例:**
+**示例：**
 ```markdown
-✅ We're colleagues working together. I need your honest technical judgment.
-❌ You should probably tell me if I'm wrong.
+✅ 我们是一起工作的同事。我需要你诚实的技术判断。
+❌ 如果我错了，你大概应该告诉我。
 ```
 
-### 6. 互惠 (Reciprocity)
-**它是什么:** 回报收到利益的义务。
+### 6. 互惠（Reciprocity）
+**它是什么：** 回报所受恩惠的义务。
 
-**如何工作:**
-- 谨慎使用 - 可能感觉具有操纵性
-- skills 中很少需要
+**如何起作用：**
+- 谨慎使用——可能让人觉得被操纵
+- 在 skill 中很少需要
 
-**何时避免:**
-- 几乎总是 (其他原则更有效)
+**何时避免：**
+- 几乎总是（其他原则更有效）
 
-### 7. 喜好 (Liking)
-**它是什么:** 偏向于与我们喜欢的人合作。
+### 7. 喜好（Liking）
+**它是什么：** 偏好与自己喜欢的人合作。
 
-**如何工作:**
+**如何起作用：**
 - **不要用于合规**
 - 与诚实反馈文化冲突
 - 制造阿谀奉承
 
-**何时避免:**
-- 总是用于纪律执行
+**何时避免：**
+- 在强制纪律时始终避免
 
-## 按 Skill 类型组合原则
+## 按 Skill 类型的原则组合
 
 | Skill 类型 | 使用 | 避免 |
 |------------|-----|-------|
-| 纪律执行 | Authority + Commitment + Social Proof | Liking, Reciprocity |
-| 指导/技术 | Moderate Authority + Unity | Heavy authority |
-| 协作 | Unity + Commitment | Authority, Liking |
-| 参考 | 仅清晰度 | 所有说服 |
+| 强制纪律型 | 权威 + 承诺 + 社会认同 | 喜好、互惠 |
+| 指导/技术型 | 适度权威 + 共同体 | 重度权威 |
+| 协作型 | 共同体 + 承诺 | 权威、喜好 |
+| 参考型 | 仅清晰度 | 所有说服手段 |
 
-## 为什么这有效: 心理学
+## 为什么有效：心理学
 
-**明确的规则减少合理化:**
-- "YOU MUST" 移除决策疲劳
-- 绝对语言消除 "is this an exception?" 问题
-- 明确的反合理化反击堵塞特定漏洞
+**清晰的界线规则减少自我合理化：**
+- "你必须"消除了决策疲劳
+- 绝对语言消除了"这是不是例外？"的疑问
+- 明确的反合理化计数器关闭了特定的漏洞
 
-**实施意图创造自动行为:**
-- 清晰触发器 + 必需行动 = 自动执行
-- "When X, do Y" 比 "generally do Y" 更有效
-- 减少合规的认知负荷
+**执行意图创造自动化行为：**
+- 清晰的触发器 + 要求的行动 = 自动执行
+- "当 X 时，做 Y"比"通常做 Y"更有效
+- 降低合规的认知负荷
 
-**LLMs 是准人类的 (parahuman):**
+**LLM 是类人的（parahuman）：**
 - 在包含这些模式的人类文本上训练
-- 权威语言在训练数据中先于合规
-- 频繁建模承诺序列 (声明 → 行动)
-- 社会证明模式 (everyone does X) 建立规范
+- 权威语言在训练数据中先于合规出现
+- 承诺序列（陈述 → 行动）被频繁建模
+- 社会认同模式（大家都做 X）建立规范
 
-## 道德使用 (Ethical Use)
+## 伦理使用
 
-**合法:**
-- 确保遵循关键实践
-- 创建有效文档
+**正当的：**
+- 确保关键实践被遵循
+- 创建有效的文档
 - 防止可预测的失败
 
-**非法:**
-- 为了个人利益操纵
+**不正当的：**
+- 为个人利益而操纵
 - 制造虚假紧迫感
 - 基于内疚的合规
 
-**测试:** 如果用户完全理解，这项技术是否符合用户的真正利益？
+**检验标准：** 如果用户完全理解这个技术，它是否仍然服务于用户的真实利益？
 
-## 研究引文
+## 研究引用
 
 **Cialdini, R. B. (2021).** *Influence: The Psychology of Persuasion (New and Expanded).* Harper Business.
-- 七项说服原则
-- 影响研究的经验基础
+- 影响研究的七项说服原则与实证基础
 
 **Meincke, L., Shapiro, D., Duckworth, A. L., Mollick, E., Mollick, L., & Cialdini, R. (2025).** Call Me A Jerk: Persuading AI to Comply with Objectionable Requests. University of Pennsylvania.
-- 测试了 7 项原则，N=28,000 LLM conversations
-- 依从率通过说服技术增加 33% → 72%
-- 权威、承诺、稀缺性最有效
-- 验证 LLM 行为的类人模型
+- 用 N=28,000 次 LLM 对话测试了 7 个原则
+- 合规率随说服技术从 33% → 72% 提升
+- 权威、承诺、稀缺最为有效
+- 验证了 LLM 行为的类人模型
 
-## 快速参考 (Quick Reference)
+## 快速参考
 
-设计 skill 时，问:
+在设计 skill 时，问自己：
 
-1.  **它是什么类型？** (纪律 vs. 指导 vs. 参考)
-2.  **我试图改变什么行为？**
-3.  **哪些原则适用？** (通常是 authority + commitment for discipline)
-4.  **我是否结合了太多？** (不要使用所有七个)
-5.  **这合乎道德吗？** (服务于用户的真正利益？)
+1. **它是什么类型？**（纪律型 vs 指导型 vs 参考型）
+2. **我试图改变什么行为？**
+3. **哪些原则适用？**（纪律型通常用权威 + 承诺）
+4. **我组合得太多了吗？**（不要同时用全部七个）
+5. **这合乎伦理吗？**（服务于用户的真实利益？）
